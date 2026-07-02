@@ -1,0 +1,20 @@
+{
+  "name": "acidware",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "2captcha": "^1.0.0",
+    "debug": "^4.3.7",
+    "discord.js-selfbot-v13": "^3.1.0",
+    "https-proxy-agent": "^9.1.0"
+  }
+}
