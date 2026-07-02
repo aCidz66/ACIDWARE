@@ -1,17 +1,21 @@
-// src/index.js
-const path = require('path');
-const ClientManager = require('./clients/ClientManager');
-const CommandHandler = require('./commands/CommandHandler');
-const ConsoleController = require('./ConsoleController');
-const { statusReport } = require('./commands/modules/TokenStatus');
+// Environment setup - must be first
+const ConfigLoader = require('./ConfigLoader');
 
-const manager = new ClientManager({ proxyUrl: process.env.DISCORD_PROXY_URL || null });
+// Main entry point
+const path = require('path');
+const ClientManager = require('./ClientManager');
+const CommandHandler = require('./CommandHandler');
+const ConsoleController = require('./ConsoleController');
+
+const manager = new ClientManager({ 
+  proxyUrl: ConfigLoader.get('DISCORD_PROXY_URL', null)
+});
 const commands = new CommandHandler('!');
 
 // Register commands
 commands.register('ping', (msg) => msg.reply('Pong!'));
 commands.register('status', () => {
-  console.log(statusReport(manager));
+  console.log(`Connected clients: ${manager.getClients().length}`);
 });
 commands.register('broadcast', (msg, args, client, mgr) => {
   const message = args.join(' ');
@@ -25,7 +29,7 @@ manager.on('message', (msg, client) => {
 
 // Load and start
 (async () => {
-  const tokensPath = path.resolve(__dirname, '..', 'tokens.json');
+  const tokensPath = path.resolve(__dirname, 'tokens.json');
   await manager.loadTokensFromFile(tokensPath);
   console.log(`${manager.readyCount} clients ready`);
 
